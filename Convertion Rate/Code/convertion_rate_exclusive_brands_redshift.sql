@@ -40,8 +40,7 @@ with
 ,	base_first_order_eb as (
 	select distinct 
 		cpf,
-    	first_value(order_num) over(partition by cpf order by order_date asc 
-    							      rows between unbounded preceding and unbounded following) first_order_eb
+    	first_value(order_num) over(partition by cpf order by order_date asc) first_order_eb
 	from raw_orders
 	where fl_count_eb=1
 )
