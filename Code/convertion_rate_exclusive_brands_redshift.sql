@@ -6,7 +6,7 @@ with
 		, fpf.order_date
 		, fpf.order_num
 		, dcv.channel
-	  , fpf.flg_first_order -- this variable is used only for validation, it's not necessary at the end.
+	        , fpf.flg_first_order -- this variable is used only for validation, it's not necessary at the end.
 		, max(
 			  case
 				when dp.exclusive_brand = 'Yes'
@@ -27,21 +27,20 @@ with
 ,  base_order_sequence	as (
    select distinct
 		cpf
-		  , order_date
-		  , order_num
-			, channel
-	    , fl_count_eb
-	    , flg_first_order 
-		, rank() over (partition by cpf order by order_date asc) as sequence_order_client
-	from raw_orders	
+		 , order_date
+		 , order_num
+	         , channel
+	         , fl_count_eb
+	         , flg_first_order 
+	   	 , rank() over (partition by cpf order by order_date asc) as sequence_order_client
+   from raw_orders	
 )
 -- CTE to get the first order that contains Exclusive brands products, so we get the first order number partitioned by CPF (client) and ordered by order date.
 ,	base_first_order_eb as (
 	select distinct 
 		cpf,
-    	first_value(order_num) over(partition by cpf 
-    									order by order_date asc 
-    									rows between unbounded preceding and unbounded following) first_order_eb
+    	first_value(order_num) over(partition by cpf order by order_date asc 
+    							      rows between unbounded preceding and unbounded following) first_order_eb
 	from raw_orders
 	where fl_count_eb=1
 )
@@ -67,17 +66,17 @@ select
 	order_date
 	, channel
 	, case
-        when sequence_order_client > 36
-        then 37
-        else sequence_order_client
+            when sequence_order_client > 36
+            then 37
+          else sequence_order_client
       end as num_sequence_order
-    , case
-        when num_sequence_order > 36
-        then 'N'|| '+'::text
-        else 'N'|| num_sequence_order::text
-        end as nm_sequence_order
-    , count(distinct cpf) as total_clients_with_orders
-    , count(distinct 
+        , case
+            when num_sequence_order > 36
+            then 'N'|| '+'::text
+            else 'N'|| num_sequence_order::text
+          end as nm_sequence_order
+        , count(distinct cpf) as total_clients_with_orders
+        , count(distinct 
 	        case 
 		    	when fl_first_order_eb = 1
 		    	then cpf 
