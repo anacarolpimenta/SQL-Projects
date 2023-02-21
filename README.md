@@ -10,6 +10,8 @@
     <a href="https://github.com/anacarolpimenta/SQL-Projects/tree/main/Convertion%20Rate/Code">Code</a>
     ·
     <a href="https://github.com/anacarolpimenta/SQL-Projects/tree/main/Convertion%20Rate/Dashboard">Mock Dashboard</a>
+    ·
+    <a href="https://github.com/anacarolpimenta/SQL-Projects/blob/main/Convertion%20Rate/Description.md">Description</a>
   </p>
 </p>
 
